@@ -1,0 +1,6 @@
+ReporterFullCis	Geneious	exon	1	63	.	+	.	gene_id "ReporterFullCis"; transcript_id "ReporterFullCis";
+ReporterFullCis	Geneious	exon	1002	1397	.	.	.	gene_id "ReporterFullCis"; transcript_id "ReporterFullCis";
+ReporterFullCis	Geneious	exon	1943	2016	.	.	.	gene_id "ReporterFullCis"; transcript_id "ReporterFullCis";
+ReporterFullTrans	Geneious	exon	1	63	.	+	.	gene_id "ReporterFullTrans"; transcript_id "ReporterFullTrans";
+ReporterFullTrans	Geneious	exon	1002	1397	.	.	.	gene_id "ReporterFullTrans"; transcript_id "ReporterFullTrans";
+ReporterFullTrans	Geneious	exon	1943	3090	.	.	.	gene_id "ReporterFullTrans"; transcript_id "ReporterFullTrans";
