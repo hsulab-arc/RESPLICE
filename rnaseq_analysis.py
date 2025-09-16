@@ -13,19 +13,21 @@ if post == "post":
 else:
     file_prefix = "alignments/"+file_prefix
 
-#Remove unnecessary flags for pandas to process SAM files correctly
+# Remove unnecessary flags for pandas to process SAM files correctly
 with open(file_prefix+"Chimericofftarget.sam","r") as source:
     with open(file_prefix+"CleanedChimericofftarget.sam","w") as dest:
         for line in source:
             cleaned = str(line).split("NH:i")[0]
-            dest.write(cleaned+'\n')
+            further_cleaned = cleaned.split("XS:")[0]
+            dest.write(further_cleaned+'\n')
 
-gtsm_chim_reads_df = pd.read_csv(file_prefix+"CleanedChimericofftarget.sam",sep="\t", header=None)
+gtsm_chim_reads_df = pd.read_csv(file_prefix+"CleanedChimericofftarget.sam",sep="\t", header=None,usecols=np.arange(12))
 
 # Dictionaries and variables containing neccessary information about each target
 
 reporter_cargo = "gttaatcgaattgaactgaa".upper()
 endogenous_cargo = "tccggcagcgaaacccctgg".upper()
+cd40l_cargo = "gtcgaagaggaagtaaacct".upper()
 
 gene_dict = {
     "Reporter" : {
@@ -67,6 +69,16 @@ gene_dict = {
         "trans_chrom" : "TFRC_trans",
         "trans_sd" : 104,
         "trans_sa" : 1930
+    },
+    "CD40L" : {
+        "cargo_seq" : cd40l_cargo,
+        "off_targ_nt" : 1888,
+        "cis_chrom" : "CD40LCis",
+        "cis_sd" : 234,
+        "cis_sa" : 1887,
+        "trans_chrom" : "CD40LTrans",
+        "trans_sd" : 234,
+        "trans_sa" : 1887
     }
 }
 
@@ -106,14 +118,14 @@ def find_cargoi(seq,query,mismatch_tolerance=4):
                 matches.append((i,mismatches))
         matches.sort(key = lambda x: x[1])
         try:
-            return matches[0][1]
+            return matches[0][0]
         except:
             print(matches)
             return 1
 
 #run samtools to extract length of BAM
-total_nonchim_reads = int(subprocess.check_output(["samtools","view","-c",file_prefix+"Aligned.sortedByCoord.out.bam"]))//2 
-#total_nonchim_reads = 1000
+# total_nonchim_reads = int(subprocess.check_output(["samtools","view","-c",file_prefix+"Aligned.sortedByCoord.out.bam"]))//2 
+total_nonchim_reads = 1000
 #Number of (unfiltered) putative off-target trans-splicing reads
 total_chim  = len(r_names)
 filtered_chim = 0
